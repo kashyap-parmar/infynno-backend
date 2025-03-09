@@ -1,29 +1,31 @@
 require("dotenv").config();
 const express = require("express");
-const bodyParser = require("body-parser");
+const propertyRoute = require("./routes/property");
+const connectDB = require("../dbConnection");
 const cors = require("cors");
-const routes = require("./routes");
+const seedDB = require("../seedDB");
 
-// ------------------------------------------------
+// -------------------------------------------------------
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// ------------------------------------------------
+app.use(cors({
+    origin: "*",
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+}));
 
-// Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+// -------------------------------------------------------
 
-// ------------------------------------------------
+(async () => {
 
-// Basic route
-app.use("/api/v1", routes);
+    await seedDB()
 
-// ------------------------------------------------
+    const PORT = process.env.PORT || 3000;
 
-// Start serve
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+    app.use("/api/v1", propertyRoute);
+
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+})();
