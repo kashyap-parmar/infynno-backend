@@ -26,7 +26,6 @@ const propertyController = async (req, res) => {
         }
 
         if (search) {
-            console.log('called', search)
             if (/^\d+$/.test(search)) {
                 filter.zipcode = Number(search);
             } else {
@@ -34,6 +33,10 @@ const propertyController = async (req, res) => {
                     { city: { $regex: search, $options: "i" } },
                     { state: { $regex: search, $options: "i" } }
                 ];
+                // filter.$or = [
+                //     { city: { $regex: `^${search}`, $options: "i" } },  // Matches starting with search
+                //     { state: { $regex: `^${search}`, $options: "i" } }
+                // ];
             }
         }
 

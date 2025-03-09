@@ -14,7 +14,6 @@ const seedDB = async () => {
         await Property.insertMany(properties);
         console.log("Properties inserted successfully!");
 
-        mongoose.connection.close();
     } catch (error) {
         console.error("Error inserting properties:", error);
         mongoose.connection.close();
